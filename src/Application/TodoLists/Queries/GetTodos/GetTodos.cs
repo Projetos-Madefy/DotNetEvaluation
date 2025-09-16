@@ -5,7 +5,6 @@ using DotNetEvaluation.Domain.Enums;
 
 namespace DotNetEvaluation.Application.TodoLists.Queries.GetTodos;
 
-[Authorize]
 public record GetTodosQuery : IRequest<TodosVm>;
 
 public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, TodosVm>
@@ -30,6 +29,7 @@ public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, TodosVm>
 
             Lists = await _context.TodoLists
                 .AsNoTracking()
+                .Skip(100000)
                 .ProjectTo<TodoListDto>(_mapper.ConfigurationProvider)
                 .OrderBy(t => t.Title)
                 .ToListAsync(cancellationToken)
